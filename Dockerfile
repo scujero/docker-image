@@ -19,5 +19,6 @@ ENV PATH /sashimi/node_modules/.bin:$PATH
 
 COPY package.json /sashimi/package.json
 
+RUN npm install -g npm@latest
 RUN npm install
-RUN npm install -g @angular/cli@9.0.1
+RUN npm install -g @angular/cli@latest
