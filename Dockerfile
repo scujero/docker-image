@@ -2,8 +2,10 @@ FROM python:3.9.0a4-buster
 
 RUN apt-get update && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get install python3 python3-dev python3-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
+
 COPY requirements.txt requirements.txt
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 
 FROM node:13.8.0-buster
 
