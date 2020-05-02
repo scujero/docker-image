@@ -2,7 +2,11 @@ FROM python:3.9.0a4-buster
 
 RUN apt-get update && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-RUN apt-get install python3 python3-dev python3-pip libxml2-dev libxslt1-dev zlib1g-dev libffi-dev libssl-dev && apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y \
+			python-dev python-pip python-setuptools \
+			libffi-dev libxml2-dev libxslt1-dev \
+			libtiff4-dev libjpeg8-dev zlib1g-dev libfreetype6-dev \
+			liblcms2-dev libwebp-dev tcl8.5-dev tk8.5-dev python-tk && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
