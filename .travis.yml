@@ -20,16 +20,19 @@ env:
     - COMMIT=${TRAVIS_COMMIT::8}
 
 script:
-  - echo "No script to run"
-
-after_success:
   - docker login -u $DOCKER_NAME -p $DOCKER_PASSWORD
-  - export REPO=$DOCKER_NAME/$REPO_NAME
+  - export SASHIMI=$DOCKER_NAME/$SASHIMI_REPO
   - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile -t $REPO:$COMMIT .
-  - docker tag $REPO:$COMMIT $REPO:$TAG
-  - docker tag $REPO:$COMMIT $REPO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $REPO
+  - docker build -f Dockerfile-sashimi -t $SASHIMI:$COMMIT .
+  - docker tag $SASHIMI:$COMMIT $SASHIMI:$TAG
+  - docker tag $SASHIMI:$COMMIT $SASHIMI:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $SASHIMI
+  - export TRITTICO=$DOCKER_NAME/$TRITTICO_REPO
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker build -f Dockerfile-trittico -t $TRITTICO:$COMMIT .
+  - docker tag $TRITTICO:$COMMIT $TRITTICO:$TAG
+  - docker tag $TRITTICO:$COMMIT $TRITTICO:travis-$TRAVIS_BUILD_NUMBER
+  - docker push $TRITTICO
 
 branches:
   only:
