@@ -9,7 +9,7 @@ os:
 dist: trusty
   
 git:
-  depth: false
+  depth: 3
   submodules: false
 
 services:
@@ -19,20 +19,11 @@ env:
   global:
     - COMMIT=${TRAVIS_COMMIT::8}
 
+before_install:
+  - chmod +x docker-build.sh
+
 script:
-  - docker login -u $DOCKER_NAME -p $DOCKER_PASSWORD
-  - export SASHIMI=$DOCKER_NAME/$SASHIMI_REPO
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile-sashimi -t $SASHIMI:$COMMIT .
-  - docker tag $SASHIMI:$COMMIT $SASHIMI:$TAG
-  - docker tag $SASHIMI:$COMMIT $SASHIMI:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $SASHIMI
-  - export TRITTICO=$DOCKER_NAME/$TRITTICO_REPO
-  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
-  - docker build -f Dockerfile-trittico -t $TRITTICO:$COMMIT .
-  - docker tag $TRITTICO:$COMMIT $TRITTICO:$TAG
-  - docker tag $TRITTICO:$COMMIT $TRITTICO:travis-$TRAVIS_BUILD_NUMBER
-  - docker push $TRITTICO
+  - ./docker-build.sh
 
 branches:
   only:
